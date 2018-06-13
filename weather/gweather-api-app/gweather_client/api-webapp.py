@@ -15,7 +15,7 @@ LOGLEVEL=logging.INFO
 # log_location = project_path + '/logs/'
 # if not os.path.exists(log_location):
 #     os.makedirs(log_location)
-# file_name = 'pingdom_api.log'
+# file_name = 'gweather.log'
 # file_location = log_location + file_name
 # logging.basicConfig(format='[%(asctime)s] [%(name)s] [%(levelname)s] %(message)s', filename=file_location, level=LOGLEVEL)
 
@@ -40,7 +40,7 @@ class WeatherResource(object):
         except Exception as e:
             logger.error('500 Internal Server Error: ' + str(e))
             raise falcon.HTTPInternalServerError(description=str(e))
-        
+
 #     def on_post(self, req, resp):
 #         try:
 #             if req.content_length:

@@ -1,11 +1,12 @@
 import grpc
 import sys
 import time
-
+import os
 import weather_pb2 as weather_messages
 import weather_pb2_grpc as weather_service
 
-SERVER_URL='localhost:9000'
+# SERVER_URL='localhost:9000'
+SERVER_URL=os.environ['WEATHER_SERVER_URL']
 LOCATIONS=['Kiev']
 
 def getWeather():
@@ -14,7 +15,6 @@ def getWeather():
 		grpc.channel_ready_future(channel).result(timeout=5)
 	except grpc.FutureTimeoutError:
 		raise Exception('Error connecting to gweather server')
-		# sys.exit('Error connecting to server')
 	else:
 		stub = weather_service.WeatherStub(channel)
 	response = []
@@ -24,7 +24,6 @@ def getWeather():
 		if response_temp:
 			print(response_temp)
 			response.append('Location: ' + loc_name + ' ' + str(response_temp).replace('\n', ' '))
-			# time.sleep(5)
 	return response
 
 def main():
