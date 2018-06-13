@@ -1,4 +1,4 @@
-# import grpc
+import grpc
 import sys
 import time
 
@@ -6,7 +6,8 @@ import weather_pb2 as weather_messages
 import weather_pb2_grpc as weather_service
 
 SERVER_URL='localhost:9000'
-LOCATIONS=['Kiev', 'Berlin', 'London', 'Lviv']
+LOCATIONS=['Kiev']
+#, 'Berlin', 'London', 'Lviv']
 
 channel = grpc.insecure_channel(SERVER_URL)
 try:
