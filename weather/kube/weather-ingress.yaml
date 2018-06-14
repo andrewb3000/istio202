@@ -1,15 +1,31 @@
-apiVersion: extensions/v1beta1
-kind: Ingress
-metadata:
-  name: grpc-weather
-  annotations:
-    kubernetes.io/ingress.class: "istio"
-spec:
-  rules:
-  - http:
-      paths:
-      - backend:
-          serviceName: grpc-weather
-          servicePort: 9000
-        path: /weather.*
+# ---
+# apiVersion: extensions/v1beta1
+# kind: Ingress
+# metadata:
+#   name: grpc-weather
+#   annotations:
+#     kubernetes.io/ingress.class: "istio"
+# spec:
+#   rules:
+#   - http:
+#       paths:
+#       - backend:
+#           serviceName: grpc-weather
+#           servicePort: 9000
+#         path: /weather.*
 ---
+  apiVersion: networking.istio.io/v1alpha3
+  kind: Gateway
+  metadata:
+    name: my-gateway
+  spec:
+    selector:
+      app: my-gatweway-controller
+    servers:
+    - port:
+        number: 80
+        name: http
+        protocol: HTTP
+      hosts:
+      - uk.bookinfo.com
+      - eu.bookinfo.com
