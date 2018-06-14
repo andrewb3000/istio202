@@ -11,6 +11,9 @@ RUN pip install --no-cache-dir -r /gweather/requirements.txt
 # Expose ports
 EXPOSE 8000
 
+# Required environment variables
+# WEATHER_SERVER_URL
+
 # Set the default directory where CMD will execute
 WORKDIR /gweather
 

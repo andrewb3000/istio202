@@ -11,6 +11,9 @@ RUN pip install --no-cache-dir -r /gweather_ui/requirements.txt
 # Expose ports
 EXPOSE 5000
 
+# Required environment variables
+# WEATHER_API_URL
+
 # Set the default directory where CMD will execute
 WORKDIR /gweather_ui
 
