@@ -1,0 +1,35 @@
+# apiVersion: "authentication.istio.io/v1alpha1"
+# kind: "Policy"
+# metadata:
+#   name: "demo-mtls-policy"
+#   namespace: "demo"
+# spec:
+#   peers:
+#   - mtls:
+# ---
+# apiVersion: "authentication.istio.io/v1alpha1"
+# kind: "Policy"
+# metadata:
+#   name: "ui-mtls"
+#   namespace: demo
+# spec:
+#   targets:
+#   - name: gweather-ui
+#   peers:
+#   - mtls:
+# ---
+#   apiVersion: "networking.istio.io/v1alpha3"
+#   kind: "DestinationRule"
+#   metadata:
+#     name: "disable-mtls-for-ui"
+#     namespace: demo
+#   spec:
+#     host: "*.demo.svc.cluster.local"
+#     trafficPolicy:
+#       tls:
+#         mode: DISABLE
+  #     portLevelSettings:
+  #     - port:
+  #         number: 1234
+  #       tls:
+  #         mode: ISTIO_MUTUAL

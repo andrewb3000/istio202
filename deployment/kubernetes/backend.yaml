@@ -1,0 +1,45 @@
+---
+  apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    name: gweather-server
+    labels:
+      app: grpc-weather
+      tier: backend
+  spec:
+    replicas: 1
+    selector:
+      matchLabels:
+        app: grpc-weather
+        tier: backend
+    template:
+      metadata:
+        labels:
+          app: grpc-weather
+          tier: backend
+      spec:
+        containers:
+        - image: caiofilipini/grpc-weather:master
+          imagePullPolicy: IfNotPresent
+          name: gweather-server
+          env:
+          - name: OPEN_WEATHER_MAP_API_KEY
+            value: a998bb724d70364542952d297b951cdf
+          - name: WEATHER_UNDERGROUND_API_KEY
+            value: 0dd5caf56d01bb7b
+          ports:
+            - containerPort: 9000
+---
+  apiVersion: v1
+  kind: Service
+  metadata:
+    labels:
+      app: grpc-weather
+    name: gweather-server
+  spec:
+    ports:
+    - name: gweather-server
+      port: 9000
+    selector:
+      app: grpc-weather
+      tier: backend
