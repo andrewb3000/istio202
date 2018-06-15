@@ -107,7 +107,7 @@
           tier: ui
       spec:
         containers:
-        - image: andrewb3000/gweather-ui:v1
+        - image: andrewb3000/gweather-ui:v2
           imagePullPolicy: IfNotPresent
           name: grpc-weather-ui
           env:
@@ -126,7 +126,7 @@
     ports:
     - name: gweather-ui
       port: 5000
-      # targetPort: 5000
+      targetPort: 5000
     selector:
       app: grpc-weather
       tier: ui

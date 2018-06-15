@@ -1,26 +1,39 @@
-apiVersion: config.istio.io/v1alpha2
-kind: EgressRule
-metadata:
-  name: dotcom-egress-rule
-spec:
-  destination:
-    service: '*.com'
-  ports:
-    - port: 80
-      protocol: http
-    - port: 443
-      protocol: https
+# apiVersion: config.istio.io/v1alpha2
+# kind: EgressRule
+# metadata:
+#   name: dotcom-egress-rule
+# spec:
+#   destination:
+#     service: '*.com'
+#   ports:
+#     - port: 80
+#       protocol: http
+#     - port: 443
+#       protocol: https
+# ---
+# apiVersion: config.istio.io/v1alpha2
+# kind: EgressRule
+# metadata:
+#   name: dotorg-egress-rule
+# spec:
+#   destination:
+#     service: '*.org'
+#   ports:
+#     - port: 80
+#       protocol: http
+#     - port: 443
+#       protocol: https
 ---
-apiVersion: config.istio.io/v1alpha2
-kind: EgressRule
-metadata:
-  name: dotorg-egress-rule
-spec:
-  destination:
-    service: '*.org'
-  ports:
-    - port: 80
-      protocol: http
-    - port: 443
-      protocol: https
----
+  apiVersion: networking.istio.io/v1alpha3
+  kind: ServiceEntry
+  metadata:
+    name: weather-external-openweathermap
+    namespace: demo
+  spec:
+    hosts:
+    - api.openweathermap.org
+    - api.wunderground.com
+    ports:
+    - number: 80
+      name: http
+      protocol: HTTP

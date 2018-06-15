@@ -17,15 +17,15 @@
   apiVersion: networking.istio.io/v1alpha3
   kind: Gateway
   metadata:
-    name: my-gateway
+    name: gweather-gateway
+    namespace: demo
   spec:
     selector:
-      app: my-gatweway-controller
+      istio: ingressgateway
     servers:
     - port:
         number: 80
         name: http
         protocol: HTTP
       hosts:
-      - uk.bookinfo.com
-      - eu.bookinfo.com
+      - "*"
