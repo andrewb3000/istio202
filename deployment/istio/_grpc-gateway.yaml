@@ -2,7 +2,7 @@
   apiVersion: networking.istio.io/v1alpha3
   kind: Gateway
   metadata:
-    name: gweather-gateway
+    name: gweather-http-gateway
     # namespace: demo
   spec:
     selector:
@@ -10,7 +10,7 @@
     servers:
     - port:
         number: 80
-        name: http
-        protocol: HTTP
+        name: grpc
+        protocol: GRPC
       hosts:
       - "*"

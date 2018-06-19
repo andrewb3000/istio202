@@ -1,4 +1,19 @@
 ---
+  apiVersion: v1
+  kind: Service
+  metadata:
+    labels:
+      app: grpc-weather
+      tier: backend
+    name: gweather-server
+  spec:
+    ports:
+    - name: grpc-server
+      port: 9000
+    selector:
+      app: grpc-weather
+      tier: backend
+---
   apiVersion: apps/v1
   kind: Deployment
   metadata:
@@ -7,7 +22,7 @@
       app: grpc-weather
       tier: backend
   spec:
-    replicas: 1
+    replicas: 2
     selector:
       matchLabels:
         app: grpc-weather
@@ -29,17 +44,4 @@
             value: 0dd5caf56d01bb7b
           ports:
             - containerPort: 9000
----
-  apiVersion: v1
-  kind: Service
-  metadata:
-    labels:
-      app: grpc-weather
-    name: gweather-server
-  spec:
-    ports:
-    - name: gweather-server
-      port: 9000
-    selector:
-      app: grpc-weather
-      tier: backend
+              name: grpc-server

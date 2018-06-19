@@ -2,19 +2,19 @@
   apiVersion: networking.istio.io/v1alpha3
   kind: VirtualService
   metadata:
-    name: gweather-route
+    name: gweather-http-route
     # namespace: demo
   spec:
     hosts:
     - "*"
     gateways:
-    - gweather-gateway
+    - gweather-http-gateway
     http:
     - match:
       - uri:
-          exact: /weather
+          regex: "^/weather.*"
       route:
       - destination:
-          host: gweather-ui.demo.svc.cluster.local
+          host: gweather-server.demo.svc.cluster.local
           port:
-            number: 5000
+            number: 9000
