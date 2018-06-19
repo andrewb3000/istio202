@@ -3,43 +3,42 @@
   kind: Service
   metadata:
     labels:
-      app: grpc-weather
+      app: gweather-ui
     name: gweather-ui
   spec:
     ports:
     - name: http-ui
       port: 5000
-      targetPort: 5000
     selector:
-      app: grpc-weather
-      tier: ui
+      app: gweather-ui
 ---
   apiVersion: apps/v1
   kind: Deployment
   metadata:
-    name: grpc-weather-ui
+    name: gweather-ui
     labels:
       app: grpc-weather
       tier: ui
+      version: v1
   spec:
+    replicas: 1
     selector:
       matchLabels:
-        app: grpc-weather
-        tier: ui
-    replicas: 1
+        app: gweather-ui
+        version: v1
     template:
       metadata:
         labels:
-          app: grpc-weather
+          app: gweather-ui
           tier: ui
+          version: v1
       spec:
         containers:
         - image: andrewb3000/gweather-ui:v2
           imagePullPolicy: IfNotPresent
-          name: grpc-weather-ui
+          name: gweather-ui
           env:
           - name: WEATHER_API_URL
             value: http://gweather-api:8000/weather
           ports:
             - containerPort: 5000
-              name: http-ui
