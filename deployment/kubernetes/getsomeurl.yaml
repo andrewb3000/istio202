@@ -1,0 +1,135 @@
+---
+  apiVersion: v1
+  kind: Service
+  metadata:
+    labels:
+      app: frontend
+    name: frontend
+  spec:
+    ports:
+    - name: http-frontend
+      port: 80
+      targetPort: 5000
+    selector:
+      app: frontend
+---
+  apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    name: frontend
+    labels:
+      app: frontend
+      tier: front
+      version: v1
+  spec:
+    replicas: 1
+    selector:
+      matchLabels:
+        app: frontend
+        version: v1
+    template:
+      metadata:
+        labels:
+          app: frontend
+          tier: front
+          version: v1
+      spec:
+        containers:
+        - image: andrewb3000/getsomeurl:1
+          imagePullPolicy: IfNotPresent
+          name: getsomeurl
+          env:
+          - name: REQUEST_URL
+            value: http://middleware:9001
+          ports:
+            - containerPort: 5000
+---
+  apiVersion: v1
+  kind: Service
+  metadata:
+    labels:
+      app: middleware
+    name: middleware
+  spec:
+    ports:
+    - name: http-middleware
+      port: 9001
+      targetPort: 5000
+    selector:
+      app: middleware
+---
+  apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    name: middleware
+    labels:
+      app: middleware
+      tier: middle
+      version: v1
+  spec:
+    replicas: 1
+    selector:
+      matchLabels:
+        app: middleware
+        version: v1
+    template:
+      metadata:
+        labels:
+          app: middleware
+          tier: middle
+          version: v1
+      spec:
+        containers:
+        - image: andrewb3000/getsomeurl:1
+          imagePullPolicy: IfNotPresent
+          name: getsomeurl
+          env:
+          - name: REQUEST_URL
+            value: http://backend:9000
+          ports:
+            - containerPort: 5000
+---
+  apiVersion: v1
+  kind: Service
+  metadata:
+    labels:
+      app: backend
+    name: backend
+  spec:
+    ports:
+    - name: http-backend
+      port: 9000
+      targetPort: 5000
+    selector:
+      app: backend
+---
+  apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    name: backend
+    labels:
+      app: backend
+      tier: back
+      version: v1
+  spec:
+    replicas: 1
+    selector:
+      matchLabels:
+        app: backend
+        version: v1
+    template:
+      metadata:
+        labels:
+          app: backend
+          tier: back
+          version: v1
+      spec:
+        containers:
+        - image: andrewb3000/getsomeurl:1
+          imagePullPolicy: IfNotPresent
+          name: getsomeurl
+          env:
+          - name: REQUEST_URL
+            value: http://time.jsontest.com
+          ports:
+            - containerPort: 5000
