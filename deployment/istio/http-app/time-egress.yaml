@@ -2,12 +2,16 @@
   apiVersion: networking.istio.io/v1alpha3
   kind: ServiceEntry
   metadata:
-    name: weather-external-resources
+    name: demo-external-resources
     # namespace: demo
   spec:
     hosts:
     - time.jsontest.com
+    - api.ipify.org
     ports:
     - number: 80
       name: http
       protocol: HTTP
+    - number: 443
+      name: https
+      protocol: HTTPS

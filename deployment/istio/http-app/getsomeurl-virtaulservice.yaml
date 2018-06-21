@@ -13,6 +13,8 @@
     - match:
       - uri:
           exact: /gettime
+      rewrite:
+        uri: /
       route:
       - destination:
           host: frontend.demo.svc.cluster.local

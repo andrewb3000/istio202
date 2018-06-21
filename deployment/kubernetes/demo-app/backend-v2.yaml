@@ -1,0 +1,31 @@
+---
+  apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    name: backend-v2
+    labels:
+      app: backend
+      tier: back
+      version: v2
+  spec:
+    replicas: 1
+    selector:
+      matchLabels:
+        app: backend
+        version: v2
+    template:
+      metadata:
+        labels:
+          app: backend
+          tier: back
+          version: v2
+      spec:
+        containers:
+        - image: andrewb3000/getsomeurl:3
+          imagePullPolicy: IfNotPresent
+          name: getsomeurl
+          env:
+          - name: REQUEST_URL
+            value: 'https://api.ipify.org?format=json'
+          ports:
+            - containerPort: 5000

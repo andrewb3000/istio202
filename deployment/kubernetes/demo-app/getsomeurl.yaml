@@ -35,7 +35,7 @@
           version: v1
       spec:
         containers:
-        - image: andrewb3000/getsomeurl:1
+        - image: andrewb3000/getsomeurl:3
           imagePullPolicy: IfNotPresent
           name: getsomeurl
           env:
@@ -80,7 +80,7 @@
           version: v1
       spec:
         containers:
-        - image: andrewb3000/getsomeurl:1
+        - image: andrewb3000/getsomeurl:3
           imagePullPolicy: IfNotPresent
           name: getsomeurl
           env:
@@ -106,7 +106,7 @@
   apiVersion: apps/v1
   kind: Deployment
   metadata:
-    name: backend
+    name: backend-v1
     labels:
       app: backend
       tier: back
@@ -125,7 +125,7 @@
           version: v1
       spec:
         containers:
-        - image: andrewb3000/getsomeurl:1
+        - image: andrewb3000/getsomeurl:3
           imagePullPolicy: IfNotPresent
           name: getsomeurl
           env:
