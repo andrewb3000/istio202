@@ -13,17 +13,17 @@ app = Flask(__name__)
 # def hello():
 #     return "GET App"
 
-@app.route("/")
+@app.route("/", methods=['GET'])
 def getsomeurl():
     headers = dict(request.headers)
-    # headerss.pop('Host', None)
+    # headers.pop('Host', None)
     del headers['Host']
-    # app.logger.warn('Headers: %s', headerss)
+    # app.logger.warn('Headers: %s', headers)
     try:
-        time = requests.get(REQUEST_URL, headers=headers)
-        if time.status_code == 200:
-            return time.content
+        get_response = requests.get(REQUEST_URL, headers=headers)
+        if get_response.status_code == 200:
+            return get_response.content
         else:
-            abort(time.status_code)
+            abort(get_response.status_code)
     except Exception as e:
         abort(500)
