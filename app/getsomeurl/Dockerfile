@@ -2,6 +2,7 @@ FROM python:slim
 
 MAINTAINER  Andrii Bryndzak <abryndz@softserveinc.com>
 
+# ENV REQUEST_URL
 ENV FLASK_PORT 5000
 
 # Copy the application folder inside the container

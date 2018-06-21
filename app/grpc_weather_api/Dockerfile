@@ -2,6 +2,10 @@ FROM python:slim
 
 MAINTAINER  Andrii Bryndzak <abryndz@softserveinc.com>
 
+# ENV WEATHER_SERVICE_URL
+# ENV WEATHER_LOCATION
+ENV FLASK_PORT 5000
+
 # Copy the application folder inside the container
 COPY . /grpc_weather_api
 
@@ -9,7 +13,7 @@ COPY . /grpc_weather_api
 RUN pip install --no-cache-dir -r /grpc_weather_api/requirements.txt
 
 # Expose ports
-EXPOSE 5000
+EXPOSE $FLASK_PORT
 
 # Required environment variables
 # WEATHER_API_URL
@@ -19,4 +23,4 @@ WORKDIR /grpc_weather_api
 
 # Set the default command to execute
 # when creating a new container
-CMD FLASK_APP=src/grpc_weather_api.py flask run --host=0.0.0.0 -p 5000
+CMD FLASK_APP=src/grpc_weather_api.py flask run --host=0.0.0.0 -p $FLASK_PORT
