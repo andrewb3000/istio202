@@ -1,9 +1,11 @@
 from flask import Flask
 from flask import abort
+from flask import jsonify
 import grpc
 import weather_pb2 as weather_messages
 import weather_pb2_grpc as weather_service
 import os
+import json
 
 WEATHER_SERVICE_URL=os.environ['WEATHER_SERVICE_URL']
 WEATHER_LOCATION=os.environ['WEATHER_LOCATION']
@@ -16,37 +18,39 @@ def grpcWeatherRequest(location):
         raise ConnectionException('Error connecting to gweather server')
     else:
         stub = weather_service.WeatherStub(channel)
-
-    if type(location) is dict:
-        response = []
-        for location_name in location:
-            glocation = weather_messages.WeatherRequest(location=location_name)
-            response_temp = stub.CurrentConditions(glocation)
-            if response_temp:
-                # print(response_temp)
-                response.append('Location: ' + location_name + ' ' + str(response_temp).replace('\n', ' '))
-            else:
-                raise FetchException('Could not get weather info')
+    # print(type(location))
+    # if type(location) is list:
+    #     response = []
+    #     for location_name in location:
+    #         glocation = weather_messages.WeatherRequest(location=location_name)
+    #         response_temp = stub.CurrentConditions(glocation)
+    #         if response_temp:
+    #             # print(response_temp)
+    #             response.append('Location: ' + location_name + ' ' + str(response_temp).replace('\n', ' '))
+    #         else:
+    #             raise FetchException('Could not get weather info')
+    # else:
+    glocation = weather_messages.WeatherRequest(location=location)
+    response = stub.CurrentConditions(glocation)
+    if response.found:
+        response_json = {'Location': location, 'Temperature': response.temperature, 'Description': response.description}
     else:
-        glocation = weather_messages.WeatherRequest(location=location)
-        response = stub.CurrentConditions(glocation)
-    return response
+        response_json = 'Could not found weather information for location %s', location
+    # print(response_json)
+    return response_json
 
 
 app = Flask(__name__)
 
-@app.route("/")
+@app.route("/", methods=['GET'])
 def hello():
     return "gWeather API"
 
-@app.route("/getweather")
+@app.route("/getweather", methods=['GET'])
 def weather():
     try:
-        weather_info = str(grpcWeatherRequest(WEATHER_LOCATION)).replace('\n', ' ')
-        print(weather_info)
-        # print(type(weather_info.content))
-        # output = time.ctime() + ' <br> \n' + weather_info.content.decode('utf-8')
-        # return output
-        return weather_info
+        # weather_info = str(grpcWeatherRequest(WEATHER_LOCATION)).replace('\n', ' ')
+        weather_info = grpcWeatherRequest(WEATHER_LOCATION)
+        return jsonify(weather_info)
     except:
         abort(502)
