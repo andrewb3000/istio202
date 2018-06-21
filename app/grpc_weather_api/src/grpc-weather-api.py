@@ -5,7 +5,6 @@ import grpc
 import weather_pb2 as weather_messages
 import weather_pb2_grpc as weather_service
 import os
-import json
 
 WEATHER_SERVICE_URL=os.environ['WEATHER_SERVICE_URL']
 WEATHER_LOCATION=os.environ['WEATHER_LOCATION']
@@ -32,10 +31,11 @@ def grpcWeatherRequest(location):
     # else:
     glocation = weather_messages.WeatherRequest(location=location)
     response = stub.CurrentConditions(glocation)
-    if response.found:
+    print(response)
+    if response.found and response.description != "":
         response_json = {'Location': location, 'Temperature': response.temperature, 'Description': response.description}
     else:
-        response_json = 'Could not found weather information for location %s', location
+        response_json = {'Location': location, 'Description': 'Could not found weather information'}
     # print(response_json)
     return response_json
 
