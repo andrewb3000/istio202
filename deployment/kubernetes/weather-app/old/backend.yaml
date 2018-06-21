@@ -3,33 +3,33 @@
   kind: Service
   metadata:
     labels:
-      app: weather-be
-    name: weather-be
+      app: gweather-be
+    name: gweather-be
   spec:
     ports:
     - name: grpc-be
       port: 9000
     selector:
-      app: weather-be
+      app: gweather-be
 ---
   apiVersion: apps/v1
   kind: Deployment
   metadata:
-    name: weather-be
+    name: gweather-be
     labels:
-      app: eather-be
+      app: geather-be
       tier: backend
       version: v1
   spec:
     replicas: 2
     selector:
       matchLabels:
-        app: weather-be
+        app: gweather-be
         version: v1
     template:
       metadata:
         labels:
-          app: weather-be
+          app: gweather-be
           tier: backend
           version: v1
       spec:

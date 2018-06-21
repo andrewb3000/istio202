@@ -3,45 +3,42 @@
   kind: Service
   metadata:
     labels:
-      app: weather-api
-    name: weather-api
+      app: gweather-api
+    name: gweather-api
   spec:
     ports:
     - name: http-api
-      port: 80
-      targetPort: 5000
+      port: 8000
     selector:
-      app: weather-api
+      app: gweather-api
 ---
   apiVersion: apps/v1
   kind: Deployment
   metadata:
-    name: weather-api-v1
+    name: gweather-api-v1
     labels:
-      app: weather-api
+      app: gweather-api
       tier: api
       version: v1
   spec:
     replicas: 1
     selector:
       matchLabels:
-        app: weather-api
+        app: gweather-api
         version: v1
     template:
       metadata:
         labels:
-          app: weather-api
+          app: gweather-api
           tier: api
           version: v1
       spec:
         containers:
-        - image: andrewb3000/grpc-weather-api:1
+        - image: andrewb3000/gweather-api:v1
           imagePullPolicy: IfNotPresent
-          name: grpc-weather-api
+          name: gweather-api
           env:
-          - name: WEATHER_SERVICE_URL
-            value: weather-be:9000
-          - name: WEATHER_LOCATION
-            value: 'Kiev, Ukraine'
+          - name: WEATHER_SERVER_URL
+            value: gweather-be:9000
           ports:
-            - containerPort: 5000
+            - containerPort: 8000
