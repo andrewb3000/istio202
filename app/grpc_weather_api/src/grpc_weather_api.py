@@ -21,11 +21,12 @@ def grpcWeatherRequest(location):
     response_list = []
     try:
         locations = json.loads(location)
-        print(locations)
+        # print(locations)
     except ValueError:
         locations = []
         locations.append(location)
     for loc in locations:
+        print(loc)
         glocation = weather_messages.WeatherRequest(location=loc)
         response = stub.CurrentConditions(glocation)
         print(response)
@@ -47,7 +48,6 @@ def hello():
 @app.route("/getweather", methods=['GET'])
 def weather():
     try:
-        weather_info = str(grpcWeatherRequest(WEATHER_LOCATION)).replace('\n', ' ')
         weather_info = grpcWeatherRequest(WEATHER_LOCATION)
         return jsonify(weather_info)
     except:

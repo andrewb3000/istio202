@@ -1,17 +1,17 @@
----
-  apiVersion: v1
-  kind: Service
-  metadata:
-    labels:
-      app: weather-api
-    name: weather-api
-  spec:
-    ports:
-    - name: http-api
-      port: 80
-      targetPort: 5000
-    selector:
-      app: weather-api
+# ---
+#   apiVersion: v1
+#   kind: Service
+#   metadata:
+#     labels:
+#       app: weather-api
+#     name: weather-api
+#   spec:
+#     ports:
+#     - name: http-api
+#       port: 80
+#       targetPort: 5000
+#     selector:
+#       app: weather-api
 ---
   apiVersion: apps/v1
   kind: Deployment
@@ -20,28 +20,28 @@
     labels:
       app: weather-api
       tier: api
-      version: v1
+      version: v2
   spec:
     replicas: 1
     selector:
       matchLabels:
         app: weather-api
-        version: v1
+        version: v2
     template:
       metadata:
         labels:
           app: weather-api
           tier: api
-          version: v1
+          version: v2
       spec:
         containers:
-        - image: andrewb3000/grpc-weather-api:1
+        - image: andrewb3000/grpc-weather-api:2
           imagePullPolicy: IfNotPresent
           name: grpc-weather-api
           env:
           - name: WEATHER_SERVICE_URL
             value: weather-be:9000
           - name: WEATHER_LOCATION
-            value: 'London, UK'
+            value: '["Kiev, Ukraine", "London, UK"]'
           ports:
             - containerPort: 5000
