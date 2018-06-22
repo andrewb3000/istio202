@@ -15,9 +15,6 @@ RUN pip install --no-cache-dir -r /grpc_weather_api/requirements.txt
 # Expose ports
 EXPOSE $FLASK_PORT
 
-# Required environment variables
-# WEATHER_API_URL
-
 # Set the default directory where CMD will execute
 WORKDIR /grpc_weather_api
 
