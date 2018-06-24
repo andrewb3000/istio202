@@ -8,3 +8,7 @@ docker run -d -p 9000:9000 \
   --name weather_service caiofilipini/grpc-weather:master
 ```
 
+## servicegraph
+    http://localhost:8088/force/forcegraph.html
+    http://localhost:8088/dotviz
+    http://localhost:8088/dotgraph
