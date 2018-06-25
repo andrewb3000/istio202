@@ -24,15 +24,55 @@
     hosts:
     - weather-api.weather.svc.cluster.local
     http:
+    ## MATCH HEADERS
     - match:
       - headers:
           x-api-version:
             exact: v2
+      ## MATCH USER-AGENT
+      # - headers:
+      #     user-agent:
+      #       regex: ".*Chrome.*"
+      ## MATCH COOKIE
+      # - headers:
+      #     cookie:
+      #       regex: ^(.*?;)?(pechyvo=123)(;.*)?$
       route:
       - destination:
           host: weather-api.weather.svc.cluster.local
           subset: v2
+      # mirror:
+        # host: ubuntu
+    ## FAULT INJECTION
+    - match:
+      - headers:
+          delay:
+            exact: enabled
+      fault:
+        delay:
+          fixedDelay: 5s
+          percent: 100
+      route:
+      - destination:
+          host: weather-api.weather.svc.cluster.local
+    - match:
+      - headers:
+          abort:
+            exact: enabled
+      fault:
+        abort:
+          percent: 50
+          httpStatus: 400
+      route:
+      - destination:
+          host: weather-api.weather.svc.cluster.local
+    ## DEFAULT ROUTE
     - route:
       - destination:
           host: weather-api.weather.svc.cluster.local
           subset: v1
+        weight: 100
+      # - destination:
+      #     host: weather-api.weather.svc.cluster.local
+      #     subset: v2
+      #   weight: 10
