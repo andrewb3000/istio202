@@ -1,0 +1,16 @@
+---
+  apiVersion: "authentication.istio.io/v1alpha1"
+  kind: "Policy"
+  metadata:
+    name: "no-mtls-for-weather-api-v2"
+  spec:
+    targets:
+    - name: weather-api
+      # subset: v2 ???
+    peers:
+    ## ENABLE JWT AUTHENTICATION
+    # origins:
+    # - jwt:
+    #     issuer: example@my-project.iam.gserviceaccount.com
+    #     jwksUri: https://www.googleapis.com/service_accounts/v1/jwk/example@my-project.iam.gserviceaccount.com
+    # principalBinding: USE_ORIGIN

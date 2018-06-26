@@ -5,6 +5,7 @@
     name: api
   spec:
     host: weather-api.weather.svc.cluster.local
+    ## GLOBAL TRAFFIC POLICY
     trafficPolicy:
       tls:
         mode: ISTIO_MUTUAL
@@ -12,9 +13,24 @@
     - name: v1
       labels:
         version: v1
+      ## PER SUBSET TRAFFIC POLICY
+      # trafficPolicy:
+      #   tls:
+      #     mode: ISTIO_MUTUAL
     - name: v2
       labels:
         version: v2
+      ## PER SUBSET TRAFFIC POLICY
+      # trafficPolicy:
+      #   tls:
+      #     mode: DISABLE
+    - name: v2alpha
+      labels:
+        version: v2alpha
+      ## PER SUBSET TRAFFIC POLICY
+      # trafficPolicy:
+      #   tls:
+      #     mode: ISTIO_MUTUAL
 ---
   apiVersion: networking.istio.io/v1alpha3
   kind: VirtualService
@@ -41,37 +57,40 @@
       - destination:
           host: weather-api.weather.svc.cluster.local
           subset: v2
-      # mirror:
-        # host: ubuntu
     ## FAULT INJECTION
-    - match:
-      - headers:
-          delay:
-            exact: enabled
-      fault:
-        delay:
-          fixedDelay: 5s
-          percent: 100
-      route:
-      - destination:
-          host: weather-api.weather.svc.cluster.local
-    - match:
-      - headers:
-          abort:
-            exact: enabled
-      fault:
-        abort:
-          percent: 50
-          httpStatus: 400
-      route:
-      - destination:
-          host: weather-api.weather.svc.cluster.local
+    # - match:
+    #   - headers:
+    #       delay:
+    #         exact: enabled
+    #   fault:
+    #     delay:
+    #       fixedDelay: 5s
+    #       percent: 100
+    #   route:
+    #   - destination:
+    #       host: weather-api.weather.svc.cluster.local
+    # - match:
+    #   - headers:
+    #       abort:
+    #         exact: enabled
+    #   fault:
+    #     abort:
+    #       percent: 50
+    #       httpStatus: 400
+    #   route:
+    #   - destination:
+    #       host: weather-api.weather.svc.cluster.local
     ## DEFAULT ROUTE
     - route:
       - destination:
           host: weather-api.weather.svc.cluster.local
           subset: v1
         weight: 100
+      ## MIRRORING
+      # mirror:
+      #   host: weather-api
+      #   subset: v2alpha
+      ## TRFFIC SHIFTING
       # - destination:
       #     host: weather-api.weather.svc.cluster.local
       #     subset: v2
