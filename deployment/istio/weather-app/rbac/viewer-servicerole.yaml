@@ -7,8 +7,8 @@ spec:
   rules:
   - services: ["*"]
     methods: ["GET"]
-    paths:
-    - ".*"
+    # paths:
+    # - ".*"
     constraints:
     - key: "app"
       values: ["weather-ui", "weather-api", "weather-be"]

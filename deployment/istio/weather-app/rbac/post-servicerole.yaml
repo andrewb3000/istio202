@@ -6,9 +6,10 @@ metadata:
 spec:
   rules:
   - services: ["weather-api"]
-    methods: ["POST", "GET"]
-    paths:
-    - "/getweather"
+    methods: ["POST"]
+    # paths:
+    # - "/getweather"
+    # - "/weather.Weather/CurrentConditions"
     # constraints:
     # - key: "version"
     #   values: ["v1", "v2alpha", "v2"]
