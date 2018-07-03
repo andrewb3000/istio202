@@ -5,8 +5,8 @@ metadata:
   namespace: weather
 spec:
   rules:
-  - services: ["weather-api"]
-    methods: ["POST"]
+  - services: ["weather-be"]
+    methods: ["weather.Weather/WeatherRequest", "weather.Weather/CurrentConditions"]
     # paths:
     # - "/getweather"
     # - "/weather.Weather/CurrentConditions"
@@ -22,9 +22,8 @@ metadata:
 spec:
   subjects:
   - properties:
+      service: "weather-api"
       namespace: "weather"
-  - properties:
-      namespace: "istio-system"
   roleRef:
     kind: ServiceRole
     name: "service-poster"

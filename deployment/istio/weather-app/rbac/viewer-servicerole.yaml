@@ -20,8 +20,10 @@ metadata:
   namespace: weather
 spec:
   subjects:
+  ## Allow requests within weather namespace
   - properties:
       namespace: "weather"
+  ## Allow requests from Istio ingressgateway
   - properties:
       namespace: "istio-system"
   roleRef:
