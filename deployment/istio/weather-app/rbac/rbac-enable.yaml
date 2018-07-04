@@ -9,6 +9,7 @@
       user: source.user | ""
       groups: ""
       properties:
+        service: source.service | ""
         app: source.labels["app"] | ""
         version: source.labels["version"] | ""
         namespace: source.namespace | ""

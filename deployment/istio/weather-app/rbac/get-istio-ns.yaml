@@ -1,23 +1,18 @@
 apiVersion: "config.istio.io/v1alpha2"
 kind: ServiceRole
 metadata:
-  name: service-viewer
-  namespace: weather
+  name: egress-service-viewer
+  namespace: istio-system
 spec:
   rules:
   - services: ["*"]
     methods: ["GET"]
-    # paths:
-    # - ".*"
-    # constraints:
-    # - key: "app"
-    #   values: ["weather-ui", "weather-api", "weather-be"]
 ---
 apiVersion: "config.istio.io/v1alpha2"
 kind: ServiceRoleBinding
 metadata:
-  name: bind-service-viewer
-  namespace: weather
+  name: bind-egress-service-viewer
+  namespace: istio-system
 spec:
   subjects:
   ## Allow requests within weather namespace

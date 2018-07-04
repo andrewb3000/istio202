@@ -7,6 +7,7 @@ spec:
   rules:
   - services: ["weather-be"]
     methods: ["weather.Weather/WeatherRequest", "weather.Weather/CurrentConditions"]
+    # methods: ["*"]
     # paths:
     # - "/getweather"
     # - "/weather.Weather/CurrentConditions"

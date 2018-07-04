@@ -1,0 +1,22 @@
+---
+  apiVersion: "config.istio.io/v1alpha2"
+  kind: ServiceRole
+  metadata:
+    name: weather-egress-service-role
+    namespace: weather
+  spec:
+    rules:
+    - services: ["weather-egress-rule.weahter.cluster.local"]
+      methods: ["GET"]
+---
+  apiVersion: "config.istio.io/v1alpha2"
+  kind: ServiceRoleBinding
+  metadata:
+    name: binding-weather-egress-allusers
+    namespace: weather
+  spec:
+    subjects:
+    - user: "*"
+    roleRef:
+      kind: ServiceRole
+      name: "weather-egress-service-role"
