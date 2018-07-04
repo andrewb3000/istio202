@@ -33,10 +33,10 @@
   apiVersion: "config.istio.io/v1alpha2"
   kind: rule
   metadata:
-    name: rbaccheck-weather
+    name: rbaccheck-demo
     namespace: istio-system
   spec:
-    match: destination.namespace == "weather"
+    match: destination.namespace == "demo"
     actions:
     - handler: handler.rbac
       instances:

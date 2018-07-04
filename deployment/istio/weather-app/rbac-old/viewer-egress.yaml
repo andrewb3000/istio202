@@ -1,24 +1,23 @@
 apiVersion: "config.istio.io/v1alpha2"
 kind: ServiceRole
 metadata:
-  name: service-viewer
-  namespace: weather
+  name: service-egress-viewer
+  # namespace: weather
 spec:
   rules:
-  - services: ["*"]
-    # methods: ["GET", "weather.Weather/POST", "weather.Weather/CurrentConditions", "Weather.CurrentConditions/POST", "POST"]
-    methods: ["GET"]
+  - services: ["istio-egressgateway.istio-system.svc.cluster.local"]
+    methods: ["*"]
     # paths:
     # - ".*"
     # constraints:
     # - key: "app"
-    #   values: ["weather-ui", "weather-api"]
+    #   values: [weather-be"]
 ---
 apiVersion: "config.istio.io/v1alpha2"
 kind: ServiceRoleBinding
 metadata:
-  name: bind-service-viewer
-  namespace: weather
+  name: bind-service-egress-viewer
+  # namespace: weather
 spec:
   subjects:
   ## Allow requests within weather namespace
@@ -29,4 +28,4 @@ spec:
       namespace: "istio-system"
   roleRef:
     kind: ServiceRole
-    name: "service-viewer"
+    name: "service-egress-viewer"
