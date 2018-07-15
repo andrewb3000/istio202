@@ -1,0 +1,32 @@
+apiVersion: "config.istio.io/v1alpha2"
+kind: ServiceRole
+metadata:
+  name: service-curl
+  namespace: weather
+spec:
+  rules:
+  - services: ["weather-api.weather.svc.cluster.local"]
+    # methods: ["GET", "weather.Weather/POST", "weather.Weather/CurrentConditions", "Weather.CurrentConditions/POST", "POST"]
+    methods: ["*"]
+    # paths:
+    # - ".*"
+    # constraints:
+    # - key: "app"
+    #   values: [weather-api"]
+---
+apiVersion: "config.istio.io/v1alpha2"
+kind: ServiceRoleBinding
+metadata:
+  name: bind-service-curl
+  namespace: weather
+spec:
+  subjects:
+  ## Allow requests within weather namespace
+  - properties:
+      app: "curl"
+  ## Allow requests from Istio ingressgateway
+  # - properties:
+  #     namespace: "istio-system"
+  roleRef:
+    kind: ServiceRole
+    name: "service-curl"

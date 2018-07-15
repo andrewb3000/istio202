@@ -1,6 +1,7 @@
 from flask import Flask
 from flask import abort
 from flask import jsonify
+from flask import request
 import grpc
 import weather_pb2 as weather_messages
 import weather_pb2_grpc as weather_service
@@ -9,6 +10,26 @@ import json
 
 WEATHER_SERVICE_URL=os.environ['WEATHER_SERVICE_URL']
 WEATHER_LOCATION=os.environ['WEATHER_LOCATION']
+
+def getForwardHeaders(request):
+    headers = {}
+    user_cookie = request.cookies.get("user")
+    if user_cookie:
+        headers['Cookie'] = 'user=' + user_cookie
+    incoming_headers = [ 'x-request-id',
+                         'x-b3-traceid',
+                         'x-b3-spanid',
+                         'x-b3-parentspanid',
+                         'x-b3-sampled',
+                         'x-b3-flags',
+                         'x-ot-span-context'
+    ]
+    for ihdr in incoming_headers:
+        val = request.headers.get(ihdr)
+        if val is not None:
+            headers[ihdr] = val
+            #print "incoming: "+ihdr+":"+val
+    return headers
 
 def grpcWeatherRequest(location):
     channel = grpc.insecure_channel(WEATHER_SERVICE_URL)
@@ -47,8 +68,10 @@ def hello():
 
 @app.route("/getweather", methods=['GET'])
 def weather():
+    headers = getForwardHeaders(request)
+    metadata = list(headers.items())
     try:
-        weather_info = grpcWeatherRequest(WEATHER_LOCATION)
+        weather_info = grpcWeatherRequest(WEATHER_LOCATION, metadata=metadata)
         return jsonify(weather_info)
     except:
         abort(502)

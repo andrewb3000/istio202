@@ -1,0 +1,27 @@
+apiVersion: "config.istio.io/v1alpha2"
+kind: ServiceRole
+metadata:
+  name: service-api
+  namespace: weather
+spec:
+  rules:
+  - services: ["weather-be.weather.svc.cluster.local"]
+    methods: ["POST"]
+    paths:
+    - "/weather.Weather/CurrentConditions"
+    # constraints:
+    # - key: "app"
+    #   values: ["weather-ui", "weather-api"]
+---
+apiVersion: "config.istio.io/v1alpha2"
+kind: ServiceRoleBinding
+metadata:
+  name: bind-service-api
+  namespace: weather
+spec:
+  subjects:
+  - properties:
+      app: "weather-api"
+  roleRef:
+    kind: ServiceRole
+    name: "service-api"

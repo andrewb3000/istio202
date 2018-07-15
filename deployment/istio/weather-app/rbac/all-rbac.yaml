@@ -1,0 +1,32 @@
+apiVersion: "config.istio.io/v1alpha2"
+kind: ServiceRole
+metadata:
+  name: service-all
+  namespace: weather
+spec:
+  rules:
+  - services: ["*"]
+    methods: ["GET", "weather.Weather/POST", "weather.Weather/CurrentConditions", "Weather.CurrentConditions/POST", "POST"]
+    #methods: ["GET"]
+    # paths:
+    # - ".*"
+    # constraints:
+    # - key: "app"
+    #   values: ["weather-ui", "weather-api"]
+---
+apiVersion: "config.istio.io/v1alpha2"
+kind: ServiceRoleBinding
+metadata:
+  name: bind-service-all
+  namespace: weather
+spec:
+  subjects:
+  ## Allow requests within weather namespace
+  - properties:
+      namespace: "weather"
+  ## Allow requests from Istio ingressgateway
+  - properties:
+      namespace: "istio-system"
+  roleRef:
+    kind: ServiceRole
+    name: "service-all"

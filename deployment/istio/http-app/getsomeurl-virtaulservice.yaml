@@ -2,8 +2,8 @@
   apiVersion: networking.istio.io/v1alpha3
   kind: VirtualService
   metadata:
-    name: getsomeurl-route
-    # namespace: demo
+    name: istio-ingress-routes
+    namespace: istio-system
   spec:
     hosts:
     - "*"
@@ -18,5 +18,15 @@
       route:
       - destination:
           host: frontend.demo.svc.cluster.local
+          port:
+            number: 80
+    - match:
+      - uri:
+          exact: /gettime-nohead
+      rewrite:
+        uri: /noheaders
+      route:
+      - destination:
+          host: frontend-nh.demo.svc.cluster.local
           port:
             number: 80

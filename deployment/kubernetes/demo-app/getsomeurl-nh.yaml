@@ -1,0 +1,135 @@
+---
+  apiVersion: v1
+  kind: Service
+  metadata:
+    labels:
+      app: frontend-nh
+    name: frontend-nh
+  spec:
+    ports:
+    - name: http-frontend
+      port: 80
+      targetPort: 5000
+    selector:
+      app: frontend-nh
+---
+  apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    name: frontend-nh
+    labels:
+      app: frontend-nh
+      tier: front
+      version: v1
+  spec:
+    replicas: 1
+    selector:
+      matchLabels:
+        app: frontend-nh
+        version: v1
+    template:
+      metadata:
+        labels:
+          app: frontend-nh
+          tier: front
+          version: v1
+      spec:
+        containers:
+        - image: andrewb3000/getsomeurl:3
+          imagePullPolicy: IfNotPresent
+          name: getsomeurl
+          env:
+          - name: REQUEST_URL
+            value: http://middleware-nh:9001/noheaders
+          ports:
+            - containerPort: 5000
+---
+  apiVersion: v1
+  kind: Service
+  metadata:
+    labels:
+      app: middleware-nh
+    name: middleware-nh
+  spec:
+    ports:
+    - name: http-middleware
+      port: 9001
+      targetPort: 5000
+    selector:
+      app: middleware-nh
+---
+  apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    name: middleware-nh
+    labels:
+      app: middleware-nh
+      tier: middle
+      version: v1
+  spec:
+    replicas: 1
+    selector:
+      matchLabels:
+        app: middleware-nh
+        version: v1
+    template:
+      metadata:
+        labels:
+          app: middleware-nh
+          tier: middle
+          version: v1
+      spec:
+        containers:
+        - image: andrewb3000/getsomeurl:3
+          imagePullPolicy: IfNotPresent
+          name: getsomeurl
+          env:
+          - name: REQUEST_URL
+            value: http://backend-nh:9000/noheaders
+          ports:
+            - containerPort: 5000
+---
+  apiVersion: v1
+  kind: Service
+  metadata:
+    labels:
+      app: backend-nh
+    name: backend-nh
+  spec:
+    ports:
+    - name: http-backend
+      port: 9000
+      targetPort: 5000
+    selector:
+      app: backend-nh
+---
+  apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    name: backend-nh-v1
+    labels:
+      app: backend-nh
+      tier: back
+      version: v1
+  spec:
+    replicas: 1
+    selector:
+      matchLabels:
+        app: backend-nh
+        version: v1
+    template:
+      metadata:
+        labels:
+          app: backend-nh
+          tier: back
+          version: v1
+      spec:
+        containers:
+        - image: andrewb3000/getsomeurl:3
+          imagePullPolicy: IfNotPresent
+          name: getsomeurl
+          env:
+          - name: REQUEST_URL
+            value: http://time.jsontest.com
+          ports:
+            - containerPort: 5000

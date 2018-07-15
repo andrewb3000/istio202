@@ -1,0 +1,66 @@
+----------------------- WITH HEADERS PROPAGATION ----------------
+
+2018-07-10 15:34:13,228] WARNING in getsomeurl: Upstream Headers: {'Host': 'localhost', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'User-Agent': 'HTTPie/0.9.9', 'X-Forwarded-For': '192.168.65.3', 'X-Forwarded-Proto': 'http',
+ 'X-Request-Id': 'fd49070c-2dfa-9b80-9ff2-9f46cf85ed05',
+  'X-B3-Traceid': 'b0e6c776bc782eef',
+   'X-B3-Spanid': 'b0e6c776bc782eef',
+    'X-B3-Sampled': '1',
+     'X-Envoy-Expected-Rq-Timeout-Ms': '15000',
+      'X-Envoy-Original-Path': '/gettime',
+       'Content-Length': '0',
+        'X-Envoy-Internal': 'true'}
+127.0.0.1 - - [10/Jul/2018 15:34:13] "GET / HTTP/1.1" 200 -
+
+[2018-07-10 15:34:13,254] WARNING in getsomeurl: Upstream Headers: {'Host': 'middleware:9001', 'User-Agent': 'python-requests/2.19.0', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*',
+ 'X-Request-Id': 'fd49070c-2dfa-9b80-9ff2-9f46cf85ed05',
+  'X-B3-Traceid': 'b0e6c776bc782eef',
+   'X-B3-Spanid': '4e6f32521eea83ad',
+    'X-B3-Sampled': '1',
+     'X-Forwarded-Proto': 'http',
+      'X-B3-Parentspanid': 'b0e6c776bc782eef',
+       'Content-Length': '0',
+        'X-Envoy-Expected-Rq-Timeout-Ms': '15000'}
+127.0.0.1 - - [10/Jul/2018 15:34:13] "GET / HTTP/1.1" 200 -
+
+[2018-07-10 15:34:13,284] WARNING in getsomeurl: Upstream Headers: {'Host': 'backend:9000', 'User-Agent': 'python-requests/2.19.0', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*',
+ 'X-Request-Id': 'fd49070c-2dfa-9b80-9ff2-9f46cf85ed05',
+  'X-B3-Traceid': 'b0e6c776bc782eef',
+   'X-B3-Spanid': 'ea985d47f1c9381f',
+    'X-B3-Parentspanid': '4e6f32521eea83ad',
+     'X-B3-Sampled': '1',
+      'X-Forwarded-Proto': 'http',
+       'Content-Length': '0',
+        'X-Envoy-Expected-Rq-Timeout-Ms': '15000'}
+127.0.0.1 - - [10/Jul/2018 15:34:13] "GET / HTTP/1.1" 200 -
+
+
+----------------------- WITHOUT HEADERS PROPAGATION ----------------
+
+[2018-07-10 15:39:13,403] WARNING in getsomeurl: Headers: {'Host': 'localhost', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'User-Agent': 'HTTPie/0.9.9', 'X-Forwarded-For': '192.168.65.3', 'X-Forwarded-Proto': 'http',
+ 'X-Request-Id': '9cd7bbb5-40a4-9b0f-ad46-e1dcac99f12c',
+  'X-B3-Traceid': '484b74e47c3bfd0a',
+   'X-B3-Spanid': '484b74e47c3bfd0a',
+    'X-B3-Sampled': '1',
+     'X-Envoy-Expected-Rq-Timeout-Ms': '15000',
+      'X-Envoy-Original-Path': '/gettime-nohead',
+       'Content-Length': '0',
+        'X-Envoy-Internal': 'true'}
+127.0.0.1 - - [10/Jul/2018 15:39:13] "GET /noheaders HTTP/1.1" 200 -
+
+[2018-07-10 15:39:13,412] WARNING in getsomeurl: Headers: {'Host': 'middleware-nh:9001', 'User-Agent': 'python-requests/2.19.0', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'X-Forwarded-Proto': 'http',
+ 'X-Request-Id': 'fee2f7fb-abca-9ad2-8f7d-4121d5d1ab27',
+  'X-B3-Traceid': 'dac0e6cd9057f63f',
+   'X-B3-Spanid': 'dac0e6cd9057f63f',
+    'X-B3-Sampled': '1',
+     'Content-Length': '0',
+      'X-Envoy-Expected-Rq-Timeout-Ms': '15000'}
+127.0.0.1 - - [10/Jul/2018 15:39:13] "GET /noheaders HTTP/1.1" 200 -
+
+[2018-07-10 15:39:13,435] WARNING in getsomeurl: Headers: {'Host': 'backend-nh:9000', 'User-Agent': 'python-requests/2.19.0', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'X-Forwarded-Proto': 'http',
+ 'X-Request-Id': '3f3cd928-cc4c-9501-8b37-13f8667d9ceb',
+  'X-B3-Traceid': 'a132e9db43d0f92a',
+   'X-B3-Spanid': 'a132e9db43d0f92a',
+    'X-B3-Sampled': '1',
+     'Content-Length': '0',
+      'X-Envoy-Expected-Rq-Timeout-Ms': '15000'}
+127.0.0.1 - - [10/Jul/2018 15:39:13] "GET /noheaders HTTP/1.1" 200 -
