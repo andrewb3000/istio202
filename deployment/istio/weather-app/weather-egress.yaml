@@ -3,7 +3,7 @@
   kind: ServiceEntry
   metadata:
     name: weather-external-resources
-    # namespace: demo
+    namespace: weather
   spec:
     hosts:
     - api.openweathermap.org

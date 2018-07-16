@@ -90,7 +90,7 @@
       # mirror:
       #   host: weather-api
       #   subset: v2alpha
-      ## TRFFIC SHIFTING
+      ## TRAFFIC SHIFTING
       # - destination:
       #     host: weather-api.weather.svc.cluster.local
       #     subset: v2

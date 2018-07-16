@@ -1,23 +1,23 @@
 apiVersion: "config.istio.io/v1alpha2"
 kind: ServiceRole
 metadata:
-  name: service-all
+  name: weather-getter
   namespace: weather
 spec:
   rules:
   - services: ["*"]
-    methods: ["GET", "weather.Weather/POST", "weather.Weather/CurrentConditions", "Weather.CurrentConditions/POST", "POST"]
-    #methods: ["GET"]
+    #methods: ["GET", "weather.Weather/POST", "weather.Weather/CurrentConditions", "Weather.CurrentConditions/POST", "POST"]
+    methods: ["GET"]
     # paths:
     # - ".*"
-    # constraints:
+    #constraints:
     # - key: "app"
     #   values: ["weather-ui", "weather-api"]
 ---
 apiVersion: "config.istio.io/v1alpha2"
 kind: ServiceRoleBinding
 metadata:
-  name: bind-service-all
+  name: ingress2weather-weather2weather
   namespace: weather
 spec:
   subjects:
@@ -27,6 +27,35 @@ spec:
   ## Allow requests from Istio ingressgateway
   - properties:
       namespace: "istio-system"
+#      istio: "ingressgateway"
   roleRef:
     kind: ServiceRole
-    name: "service-all"
+    name: "weather-getter"
+---
+apiVersion: "config.istio.io/v1alpha2"
+kind: ServiceRole
+metadata:
+  name: backend-poster
+  namespace: weather
+spec:
+  rules:
+  - services: ["weather-be.weather.svc.cluster.local"]
+    methods: ["POST"]
+    paths:
+    - "/weather.Weather/CurrentConditions"
+    # constraints:
+    # - key: "app"
+    #   values: ["weather-ui", "weather-api"]
+---
+apiVersion: "config.istio.io/v1alpha2"
+kind: ServiceRoleBinding
+metadata:
+  name: api2backend-poster
+  namespace: weather
+spec:
+  subjects:
+  - properties:
+      app: "weather-api"
+  roleRef:
+    kind: ServiceRole
+    name: "backend-poster"

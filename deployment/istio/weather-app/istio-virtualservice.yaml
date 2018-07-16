@@ -13,8 +13,8 @@
     - match:
       - uri:
           exact: /weather
-      # - uri:
-      #     exact: /somefunnyurl
+      - uri:
+          exact: /somefunnyurl
       rewrite:
         uri: /
       route:
