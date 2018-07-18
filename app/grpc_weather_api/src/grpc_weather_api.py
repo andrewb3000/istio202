@@ -31,7 +31,7 @@ def getForwardHeaders(request):
             #print "incoming: "+ihdr+":"+val
     return headers
 
-def grpcWeatherRequest(location):
+def grpcWeatherRequest(location, meta=""):
     channel = grpc.insecure_channel(WEATHER_SERVICE_URL)
     try:
         grpc.channel_ready_future(channel).result(timeout=5)
@@ -47,10 +47,10 @@ def grpcWeatherRequest(location):
         locations = []
         locations.append(location)
     for loc in locations:
-        print(loc)
+        # print(loc)
         glocation = weather_messages.WeatherRequest(location=loc)
-        response = stub.CurrentConditions(glocation)
-        print(response)
+        response = stub.CurrentConditions(glocation, metadata=meta)
+        # print(response)
         if response.found and response.description != "":
             response_json = {'Location': loc, 'Temperature': response.temperature, 'Description': response.description}
         else:
@@ -69,9 +69,10 @@ def hello():
 @app.route("/getweather", methods=['GET'])
 def weather():
     headers = getForwardHeaders(request)
-    metadata = list(headers.items())
+    meta = list(headers.items())
+    # print(meta)
     try:
-        weather_info = grpcWeatherRequest(WEATHER_LOCATION, metadata=metadata)
+        weather_info = grpcWeatherRequest(WEATHER_LOCATION, meta)
         return jsonify(weather_info)
     except:
         abort(502)
