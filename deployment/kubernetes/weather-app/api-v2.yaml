@@ -35,7 +35,7 @@
           version: v2
       spec:
         containers:
-        - image: andrewb3000/grpc-weather-api:2
+        - image: andrewb3000/grpc-weather-api:trace
           imagePullPolicy: IfNotPresent
           name: grpc-weather-api
           env:
